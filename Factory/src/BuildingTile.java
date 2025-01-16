@@ -1,11 +1,8 @@
-package main.java;
-
-public class SwampTile extends Tile {
-    String description = "swamp";
-    String character = " S ";
+public class BuildingTile extends Tile {
+    String description = "building";
+    String character = " B ";
 
     @Override
-
     public String getDescription() {
         return description;
     }
@@ -14,5 +11,6 @@ public class SwampTile extends Tile {
     public String getCharacter() {
         return character;
     }
+
 
 }

@@ -1,5 +1,3 @@
-package main.java;
-
 public class WildernessMap extends Map {
     public WildernessMap(int width, int height) {
         super(width, height);

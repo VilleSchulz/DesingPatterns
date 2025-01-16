@@ -1,5 +1,3 @@
-package main.java;
-
 abstract class Map {
     protected int width;
     protected int height;
