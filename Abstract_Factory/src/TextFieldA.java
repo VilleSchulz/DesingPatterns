@@ -1,12 +1,13 @@
-public class TextFieldA  extends TextField{
-    String style;
-    public TextFieldA () {
-        this.style = "|               |";
-
+public class TextFieldA extends TextField {
+    String text;
+    String style = "!"+text+               "!";
+    public TextFieldA (String text){
+        this.text = text;
     }
+
     @Override
     public String display(){
 
-        return style;
+        return this.style;
     }
 }
