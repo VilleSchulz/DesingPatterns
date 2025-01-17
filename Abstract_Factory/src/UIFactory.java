@@ -6,11 +6,7 @@ import java.util.Scanner;
 abstract class UIFactory {
     public String[] signupText = {"Name", "Last name", "Phone", "Password"};
     public String[] loginText = {"Name", "Password"};
-    static Button buttons[];
-    private Checkbox checkboxes[];
     List<TextField> textFields = new ArrayList<>();
-    private String formType;
-
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
