@@ -1,13 +1,15 @@
 public class TextFieldA extends TextField {
-    String text;
-    String style = "!"+text+               "!";
+
+
     public TextFieldA (String text){
-        this.text = text;
+        super(text);
     }
 
     @Override
-    public String display(){
-
-        return this.style;
+    public void display() {
+        System.out.println(text +": __________________________" );
+    }
+    @Override public void setText(String text) {
+        this.text = text;
     }
 }

@@ -1,14 +1,16 @@
 public class ButtonB extends Button {
-    String style;
 
     public ButtonB(String text) {
-        this.style = "[" + text + "]";
+
+        super(text);
     }
 
-
     @Override
-    public String display() {
+    public void display() {
+        System.out.print("[" + text + "]       ");
 
-        return this.style;
+    }
+    @Override public void setText(String text) {
+        this.text = text;
     }
 }

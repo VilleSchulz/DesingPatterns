@@ -1,3 +1,9 @@
 abstract class Checkbox {
-    abstract String display();
+    protected String text;
+    public Checkbox(String text){
+        this.text = text;
+    }
+    public abstract void display();
+
+    public abstract void setText(String text);
 }

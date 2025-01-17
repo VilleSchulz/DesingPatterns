@@ -1,51 +1,17 @@
-public class BFactory extends UIFactory {
-    ButtonB buttons [];
-    CheckboxB checkboxes[];
-    TextFieldB textfields [];
-    String [] signupText = {"Name","Last name","Phone","Password"};
-    String [] loginText = {"Name","Password"};
-    String [] buttonText = {"OK", "Cancel"};
-
-
-
-
-    public void generateUI(String text){
-        switch (text){
-            case "SignupForm": generateSignup();
-                break;
-            case "LoginForm": generateLogin();
-                break;
-        }
-
-
+// Concrete Factory B
+class BFactory extends UIFactory {
+    @Override
+    public Button createButton(String text) {
+        return new ButtonB(text);
     }
 
-
-    private void generateSignup() {
-        //generate textfields
-        for(int i = 0; i < 5;i++){
-            textfields[i] = new TextFieldB(signupText[i]);
-        }
-        //generate buttons
-        for(int i = 0; i < 2;i++){
-            buttons[i] = new ButtonB(buttonText[i]);
-        }
-
+    @Override
+    public TextField createTextField(String text) {
+        return new TextFieldB(text);
     }
 
-    private void generateLogin() {
-
-        //generate textfields
-        for(int i = 0; i < 5;i++){
-            textfields[i] = new TextFieldB(loginText[i]);
-        }
-
-        //generate buttons
-        for(int i = 0; i < 2;i++){
-            buttons[i] = new ButtonB(buttonText[i]);
-        }
+    @Override
+    public Checkbox createCheckbox(String text) {
+        return new CheckboxB(text);
     }
-
-
-
 }

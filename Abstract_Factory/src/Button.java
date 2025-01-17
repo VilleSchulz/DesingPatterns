@@ -1,6 +1,14 @@
 abstract class Button {
+    protected String text;
 
-    abstract String display();
+    public Button(String text) {
+        this.text = text;
+    }
+
+
+    public abstract void display();
+    public abstract void setText(String text);
+
 
 
 }

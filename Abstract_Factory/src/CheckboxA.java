@@ -1,13 +1,13 @@
 public class CheckboxA extends Checkbox {
-    String style;
-    public CheckboxA(){
-        this.style = "[ ]";
-
-
+    public CheckboxA(String text) {
+        super(text);
     }
-    @Override
-    public String display(){
 
-        return style;
+    @Override
+    public void display() {
+        System.out.println(text + " [ ]");
+    }
+    @Override public void setText(String text) {
+        this.text = text;
     }
 }
