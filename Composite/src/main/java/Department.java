@@ -3,10 +3,11 @@ import java.util.List;
 
 public class Department extends OrganizationComponent {
     final private String name;
-    List<OrganizationComponent> children = new ArrayList<>();
+    List<OrganizationComponent> children;
     public Department(String name){
         super(name);
         this.name = name;
+        children = new ArrayList<>();
 
     }
 
