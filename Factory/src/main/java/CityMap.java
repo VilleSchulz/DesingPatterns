@@ -3,6 +3,7 @@ public class CityMap extends Map {
         super(width, height);
     }
 
+
     @Override
     protected Tile createTile() {
         int random = (int) (Math.random() * 3);
