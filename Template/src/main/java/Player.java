@@ -3,8 +3,8 @@ import java.util.List;
 
 public class Player {
     String name;
-    int Wins;
-    int Loses;
+    int wins;
+    int loses;
     int index;
     private int value;
     Boolean stay = false;
@@ -13,8 +13,8 @@ public class Player {
     public Player(String name, int index) {
         this.name = name;
         this.index= index;
-        this.Loses = 0;
-        this.Wins = 0;
+        this.loses = 0;
+        this.wins = 0;
 
         hand = new ArrayList<>();
 
@@ -43,6 +43,7 @@ public class Player {
     public void clearHand() {
         hand.clear();
         value = 0;
+        stay = false;
     }
 
 
