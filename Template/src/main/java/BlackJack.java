@@ -8,7 +8,7 @@ public class BlackJack extends Game {
     List<Card> cards;
     private Player winner;
     private Player looser;
-   Player  currentPlayer;
+    Player currentPlayer;
 
     public BlackJack() {
         players = new ArrayList<>();
@@ -18,6 +18,9 @@ public class BlackJack extends Game {
 
     }
 
+
+
+//********************** BASE GAME LOGIC ***********************
     //Ask player name and add it to game
     @Override
     public void initializeGame(int numberOfPlayers) {
@@ -49,27 +52,30 @@ public class BlackJack extends Game {
 
         //give 2 cards to players in start
         initialHand();
+
     }
 
 
     //This method is called to play single turn of player
     @Override
     public void playSingleTurn(int playerIndex) {
-        for(Player plr : players){
-            if(plr.index == playerIndex){
-                currentPlayer = plr;;
+
+        for (Player plr : players) {
+            if (plr.index == playerIndex) {
+                currentPlayer = plr;
             }
         }
-        checkIfWinner();
-        while (winner == null) {
-
+            // if only one player left he wins
             if (players.size() == 1) {
                 System.out.println("Only one player left, game ends");
-                System.out.println("Winner is " + currentPlayer.name);
-                System.out.println(currentPlayer.name + " has " + currentPlayer.getValue());
-                this.winner = currentPlayer;
+                System.out.println("Winner is " + players.get(0).name);
+                System.out.println(players.get(0).name + " has " + players.get(0).getValue());
+                this.winner = players.get(0);
                 return;
             }
+        //loop until player stays or has 21 or more
+        checkIfWinner();
+        while (winner == null) {
             System.out.println(currentPlayer.name + " do you want to take new card Y/N or Stay(S)");
             String answer = sc.nextLine().toUpperCase();
             switch (answer) {
@@ -77,9 +83,6 @@ public class BlackJack extends Game {
                     currentPlayer.takeCard(cards.remove(0));
                     printHand(currentPlayer);
                     //check if player has 21 or more
-                    if (checkIfWinner()) {
-                        return;
-                    }
                     for (Player droppedPlayer : droppedPlayers) {
                         if (droppedPlayer.name.equals(currentPlayer.name)) {
                             return;
@@ -88,7 +91,7 @@ public class BlackJack extends Game {
                     break;
 
                 case "S":
-                    currentPlayer.stay = true;
+                    currentPlayer.setStay();
                     return;
                 case "N":
                     return;
@@ -102,7 +105,80 @@ public class BlackJack extends Game {
 
 
     }
-    //*********************************CHECK HANDS******************************************************
+
+    //This method is called to check if game has ended if so it will ask if player wants to play again or end game
+    @Override
+    public boolean endOfGame() {
+        if (this.winner != null) {
+            this.winner.wins += 1;
+            for (Player player : players) {
+
+
+                if (!player.name.equals(winner.name)) {
+                    player.loses += 1;
+                }
+            }
+            System.out.println("****Round ended****");
+            System.out.println("Winner is " + winner.name);
+            System.out.println("********************");
+            //ask if player wants to play again
+
+            if (players.isEmpty()) {
+                return true;
+            }
+
+            while(true){
+                System.out.println("Do you want to play again? Y/N");
+                String answer = sc.nextLine().toUpperCase();
+                switch (answer) {
+                    case "Y":
+                        clearHands();
+                        initializeGame(numberOfPlayers);
+                        return false;
+                    case "N":
+                        return true;
+                    default:
+                        System.out.println("Invalid input");
+                        break;
+                }
+
+            }
+
+
+        }
+        return false;
+
+
+
+    }
+
+    //This method is called when game ends to display winner
+    @Override
+    public void displayWinner() {
+        Player mostWins = null;
+        emptyPlayers();
+
+        //find player with most wins
+        for (Player player : droppedPlayers) {
+            if (mostWins == null) {
+                mostWins = player;
+            }
+            if (player.wins > mostWins.wins) {
+                mostWins = player;
+            }
+        }
+        //display winner with total wins
+        System.out.println("Winner is " + mostWins.name);
+        for (Player player : droppedPlayers) {
+            System.out.println(player.name + " had " + player.wins);
+        }
+
+    }
+    //********************** BASE GAME LOGIC ENDS ***********************
+
+
+
+
 
 
     //This method is called to give 2 cards to players in start
@@ -133,12 +209,13 @@ public class BlackJack extends Game {
 
     }
 
-    public boolean checkIfWinner() {
+    public void checkIfWinner() {
         Player bestPlayer = null;
         Iterator<Player> iterator = players.iterator();
         while (iterator.hasNext()) {
             Player player = iterator.next();
             int currentPlayerHand = player.getValue();
+
             // if player has more than 21 he loses
             if (currentPlayerHand > 21) {
                 droppedPlayers.add(player);
@@ -146,15 +223,9 @@ public class BlackJack extends Game {
                 System.out.println(player.name + " has more than 21 and is OUT");
             }
 
-            // if all players are out game ends
-            if (players.isEmpty()) {
-                endOfGame();
-            }
-
             // if player has 21 it wins
             if (currentPlayerHand == 21) {
                 this.winner = player;
-                return true;
             }
             // if all players stay check who has best hand
             if (allPlayersStayed()) {
@@ -162,17 +233,15 @@ public class BlackJack extends Game {
                     bestPlayer = player;
                 }
                 this.winner = bestPlayer;
-                return true;
             }
 
 
         }
-        return false;
     }
 
     public boolean allPlayersStayed() {
         for (Player player : players) {
-            if (!player.stay) {
+            if (!player.getStay()) {
                 return false;
             }
         }
@@ -206,66 +275,6 @@ public class BlackJack extends Game {
         }
     }
 
-    //This method is called to check if game has ended if so it will ask if player wants to play again or end game
-    @Override
-    public boolean endOfGame() {
-        if (this.winner != null) {
-            this.winner.wins += 1;
 
-            for (Player player : players) {
-
-
-                if (!player.name.equals(winner.name)) {
-                    player.loses += 1;
-                }
-            }
-
-
-            //ask if player wants to play again
-            System.out.println("Do you want to play again? Y/N");
-            String answer = sc.nextLine().toUpperCase();
-            while (!answer.equals("Y") && !answer.equals("N")) {
-                System.out.println("Do you want to play again? Y/N");
-                answer = sc.nextLine().toUpperCase();
-
-            }
-
-            if (answer.equals("Y")) {
-                clearHands();
-                initializeGame(numberOfPlayers);
-                return false;
-            } else {
-                return true;
-            }
-        }
-
-        return false;
-
-
-    }
-
-    //This method is called when game ends to display winner
-    @Override
-    public void displayWinner() {
-        Player mostWins = null;
-        emptyPlayers();
-
-        //find player with most wins
-        for (Player player : droppedPlayers) {
-            if (mostWins == null) {
-                mostWins = player;
-            }
-            if (player.wins > mostWins.wins) {
-                mostWins = player;
-            }
-        }
-        //display winner with total wins
-        System.out.println("Winner is " + mostWins.name);
-        for (Player player : droppedPlayers) {
-            System.out.println(player.name + " had " + player.wins);
-        }
-
-
-    }
 
 }

@@ -7,7 +7,7 @@ public class Player {
     int loses;
     int index;
     private int value;
-    Boolean stay = false;
+    private Boolean stay = false;
     List<Card> hand;
 
     public Player(String name, int index) {
@@ -45,6 +45,16 @@ public class Player {
         value = 0;
         stay = false;
     }
+
+        public boolean setStay() {
+            System.out.println(name + " stays at: "+ value);
+            stay = true;
+            return true;
+        }
+
+        public boolean getStay() {
+            return stay;
+        }
 
 
 }
