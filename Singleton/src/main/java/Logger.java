@@ -3,7 +3,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class Logger {
-    public static Logger  logger = null;
+    private static Logger  logger = null;
     private FileWriter file;
 
     private Logger() throws IOException {

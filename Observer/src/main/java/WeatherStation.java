@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class WeatherStation extends Thread {
     private double temperature = 0;
@@ -10,14 +11,12 @@ public class WeatherStation extends Thread {
 
     @Override
     public void run() {
+        Random random = new Random();
         while (running) {
-            double decreaseOrIncrease = Math.random();
+            double change = random.nextBoolean() ? 1 : -1;
             try {
-                if (decreaseOrIncrease < 0.5) {
-                    temperature -= 1;
-                } else {
-                    temperature += 1;
-                }
+
+                temperature += change;
 
 
                 notifyObservers();
@@ -33,6 +32,7 @@ public class WeatherStation extends Thread {
             }
 
         }
+
 
     }
 
