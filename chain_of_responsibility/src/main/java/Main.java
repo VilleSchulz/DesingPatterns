@@ -3,17 +3,16 @@ public class Main {
 
     public static void main(String[] args){
         Handler primaryHandler;
-        Handler GenralFeedbackHandler = new GeneralFeedbackHandler();
+        Handler GeneralFeedbackHandler = new GeneralFeedbackHandler();
         Handler DevelopmentHandler = new DevelopmentHandler();
         Handler ContactHandler = new ContactHandler();
         Handler CompensationHandler = new CompensationHandler();
-        GenralFeedbackHandler.setNextHandler(DevelopmentHandler);
+        GeneralFeedbackHandler.setNextHandler(DevelopmentHandler);
         DevelopmentHandler.setNextHandler(ContactHandler);
         ContactHandler.setNextHandler(CompensationHandler);
 
 
-        primaryHandler = GenralFeedbackHandler;
-
+        primaryHandler = GeneralFeedbackHandler;
 
         primaryHandler.processMessage(new Message(MessageType.GENERAL_FEEDBACK, "I love your product", "ASD@gmail.com"));
         primaryHandler.processMessage(new Message(MessageType.DEVELOPMENT_SUGGESTIONS, "I would like to see this feature", "ASD@gmail.com"));

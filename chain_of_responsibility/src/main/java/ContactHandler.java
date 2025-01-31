@@ -1,17 +1,19 @@
 public class ContactHandler extends Handler {
-    private final MessageType messageType = MessageType.CONTACT_REQUESTS;
-    private Handler nextHandler;
 
 
+    public ContactHandler(){
+        super.messageType = MessageType.CONTACT_REQUESTS;
+    }
     public void setNextHandler(Handler handler){
-        this.nextHandler = handler;
+        super.nextHandler = handler;
     }
     @Override public void processMessage(Message message){
 
         if(message.messageType == this.messageType){
+            System.out.println("Contact Handler in work:");
             System.out.println("Contact Handler: " + message.messageContent);
             System.out.println("Contact Handler: " + message.senderEmail);
-        }else{System.out.println("Contact Handler: This message is not for me");
+        }else{
             if(nextHandler != null){
                 nextHandler.processMessage(message);
             }
