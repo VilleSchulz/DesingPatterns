@@ -15,4 +15,6 @@ public class Memento implements IMemento {
     public boolean isSelected() {
         return isSelected;
     }
+
+
 }

@@ -1,12 +1,20 @@
 import javafx.application.Application;
+import javafx.beans.InvalidationListener;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.util.*;
 
 public class Gui extends Application {
 
@@ -16,6 +24,8 @@ public class Gui extends Application {
     private ColorBox colorBox2;
     private ColorBox colorBox3;
     private CheckBox checkBox;
+    private ListView history;
+
 
     public void start(Stage stage) {
 
@@ -28,12 +38,15 @@ public class Gui extends Application {
         colorBox1 = new ColorBox(1, controller);
         colorBox2 = new ColorBox(2, controller);
         colorBox3 = new ColorBox(3, controller);
+        history = new ListView();
+
 
         // Create a CheckBox
         checkBox = new CheckBox("Click me!");
         checkBox.setPadding(insets);
 
         // Add the ColorBoxes and CheckBox to a HBox
+        HBox historyBox = new HBox(history);
         HBox hBox = new HBox(colorBox1.getRectangle(), colorBox2.getRectangle(), colorBox3.getRectangle());
         hBox.setSpacing(10);
 
@@ -41,12 +54,26 @@ public class Gui extends Application {
         hBox.setMargin(colorBox2.getRectangle(), insets);
         hBox.setMargin(colorBox3.getRectangle(), insets);
 
+       history.setOnMouseClicked(event->{
 
-        Label label = new Label("Press Ctrl-Z to undo the last change.");
+           String selecedItem = history.getSelectionModel().getSelectedItem().toString();
+           for (int i =0 ; i<history.getItems().size();i++){
+               if(history.getItems().get(i).toString().equals(selecedItem)){
+                   controller.restoreState(i);
+                   updateGui();
+                   break;
+           }
+
+
+
+       }
+
+        });
+        Label label = new Label("Press Ctrl-Z to undo the last change, CTRL-Y to redo.");
         label.setPadding(insets);
 
         // create a VBox that contains the HBox and the CheckBox
-        VBox vBox = new VBox(hBox, checkBox, label);
+        VBox vBox = new VBox(historyBox,hBox, checkBox, label);
         // call controller when the CheckBox is clicked
         checkBox.setOnAction(event -> {
             controller.setIsSelected(checkBox.isSelected());
@@ -59,8 +86,7 @@ public class Gui extends Application {
                 // Ctrl-Z: undo
                 System.out.println("Undo key combination pressed");
                 controller.undo();
-            }
-            else if (event.isControlDown()&& event.getCode() == KeyCode.Y){
+            } else if (event.isControlDown() && event.getCode() == KeyCode.Y) {
                 System.out.println("Redo key combination pressed");
                 controller.redo();
 
@@ -79,5 +105,7 @@ public class Gui extends Application {
         colorBox2.setColor(controller.getOption(2));
         colorBox3.setColor(controller.getOption(3));
         checkBox.setSelected(controller.getIsSelected());
+        history.setItems(controller.getHistory());
+
     }
 }

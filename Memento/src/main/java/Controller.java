@@ -1,3 +1,6 @@
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +9,8 @@ public class Controller {
     private Model model;
     private Gui gui;
     private List<IMemento> undoHistory; // redo history
-    private List<IMemento> redoHistory; // redo history
+    private List<IMemento> redoHistory;
+    // redo history
 
     public Controller(Gui gui) {
         this.model = new Model();
@@ -18,6 +22,7 @@ public class Controller {
     public void setOption(int optionNumber, int choice) {
         saveToHistory();
         model.setOption(optionNumber, choice);
+        gui.updateGui();
     }
 
     public int getOption(int optionNumber) {
@@ -27,6 +32,7 @@ public class Controller {
     public void setIsSelected(boolean isSelected) {
         saveToHistory();
         model.setIsSelected(isSelected);
+
     }
 
     public boolean getIsSelected() {
@@ -46,10 +52,12 @@ public class Controller {
     private void saveToHistory() {
         IMemento currentState = model.createMemento();
         undoHistory.add(currentState);
+        redoHistory.clear();
+
     }
 
     public void redo() {
-        if(!redoHistory.isEmpty()){
+        if (!redoHistory.isEmpty()) {
             System.out.println("Memento found in history");
             IMemento previousState = redoHistory.remove(redoHistory.size() - 1);
             undoHistory.add(previousState);
@@ -57,5 +65,21 @@ public class Controller {
             gui.updateGui();
 
         }
+    }
+
+    public ObservableList<String> getHistory() {
+        ObservableList<String> history = FXCollections.observableArrayList();
+        for (IMemento memento : undoHistory) {
+            history.add(memento.toString());
+        }
+        return history;
+
+
+    }
+
+    public void restoreState(int i) {
+        IMemento previousState = undoHistory.get(i);
+        model.restoreState(previousState);
+        undoHistory.remove(i);
     }
 }
