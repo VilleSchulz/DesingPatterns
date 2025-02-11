@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -33,11 +34,11 @@ public class Gui extends Application {
 
         // Insets for margin and padding
         Insets insets = new Insets(10, 10, 10, 10);
-
         // Create three ColorBoxes
         colorBox1 = new ColorBox(1, controller);
         colorBox2 = new ColorBox(2, controller);
         colorBox3 = new ColorBox(3, controller);
+        Button historyButton = new Button("History");
         history = new ListView();
 
 
@@ -46,7 +47,7 @@ public class Gui extends Application {
         checkBox.setPadding(insets);
 
         // Add the ColorBoxes and CheckBox to a HBox
-        HBox historyBox = new HBox(history);
+        //HBox historyBox = new HBox(history);
         HBox hBox = new HBox(colorBox1.getRectangle(), colorBox2.getRectangle(), colorBox3.getRectangle());
         hBox.setSpacing(10);
 
@@ -54,8 +55,30 @@ public class Gui extends Application {
         hBox.setMargin(colorBox2.getRectangle(), insets);
         hBox.setMargin(colorBox3.getRectangle(), insets);
 
-       history.setOnMouseClicked(event->{
 
+
+        historyButton.setOnMouseClicked(event->{
+            Stage historyStage = new Stage();
+            Scene historyScene = new Scene(history);
+            historyStage.setScene(historyScene);
+            historyStage.show();
+            historyScene.setOnKeyPressed(evt -> {
+                if (evt.isControlDown() && evt.getCode() == KeyCode.Z) {
+                    // Ctrl-Z: undo
+                    System.out.println("Undo key combination pressed");
+                    controller.undo();
+                } else if (evt.isControlDown() && evt.getCode() == KeyCode.Y) {
+                    System.out.println("Redo key combination pressed");
+                    controller.redo();
+
+                }
+            });
+
+
+
+
+        });
+       history.setOnMouseClicked(event->{
            String selecedItem = history.getSelectionModel().getSelectedItem().toString();
            for (int i =0 ; i<history.getItems().size();i++){
                if(history.getItems().get(i).toString().equals(selecedItem)){
@@ -73,7 +96,7 @@ public class Gui extends Application {
         label.setPadding(insets);
 
         // create a VBox that contains the HBox and the CheckBox
-        VBox vBox = new VBox(historyBox,hBox, checkBox, label);
+        VBox vBox = new VBox(historyButton,hBox, checkBox, label);
         // call controller when the CheckBox is clicked
         checkBox.setOnAction(event -> {
             controller.setIsSelected(checkBox.isSelected());
@@ -92,6 +115,7 @@ public class Gui extends Application {
 
             }
         });
+
 
 
         stage.setScene(scene);
