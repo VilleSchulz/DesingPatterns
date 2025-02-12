@@ -80,6 +80,6 @@ public class Controller {
     public void restoreState(int i) {
         IMemento previousState = undoHistory.get(i);
         model.restoreState(previousState);
-        undoHistory.remove(i);
+        //undoHistory.remove(i);
     }
 }
