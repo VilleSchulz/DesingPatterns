@@ -6,7 +6,7 @@ import tiles.Tile;
 public class MapController {
     private  int gridWidth;
     private  int gridHeight;
-    private final int TILE_SIZE = 50;
+    private final int TILE_SIZE = 40;
     private Game game;
 
 

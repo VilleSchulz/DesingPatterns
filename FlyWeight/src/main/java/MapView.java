@@ -12,7 +12,7 @@ import tiles.Tile;
 
 
 public class MapView extends Application {
-    private MapController controller = new MapController(20, 20);
+    private MapController controller = new MapController(15, 15);
     private final int CANVAS_WIDTH = controller.getGridWidth() * controller.getTileSize();
     private final int CANVAS_HEIGHT = controller.getGridHeight() * controller.getTileSize();
     private Canvas canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
