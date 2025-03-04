@@ -1,9 +1,7 @@
-import java.util.Calendar;
+
 
 public class Main {
-    public static void  main(String[] args){
-        //Calendar calendar = Calendar.getInstance();
-
+    public static void main(String[] args) {
         NewDateInterface date = new CalendarToNewDateAdapter();
         date.setDay(1);
         date.setMonth(1);
@@ -13,10 +11,6 @@ public class Main {
         date.advanceDays(5);
 
         System.out.println(date.getDate());
-
-
-
-
 
 
     }
